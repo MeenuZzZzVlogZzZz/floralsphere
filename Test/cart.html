@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Cart - Floral Sphere</title>
+    <link rel="stylesheet" href="style.css">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body>
+    <header class="cart-header">
+    <h2>Your Floral Treasures</h2>
+    <a href="floralsphere.html" style="color: #ddd; text-decoration: none; font-size: 14px;">← Continue Shopping</a>
+</header>
+
+<div class="cart-container">
+    <div id="cart-page-items">
+        </div>
+
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 2px dashed #eee;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 28px;">Total Investment:</h2>
+            <h2 id="cart-page-total" style="color: #2ecc71;">₹0</h2>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <label style="font-weight: bold; display: block; margin-bottom: 8px;">Gift Note for the Recipient:</label>
+            <textarea id="gift-note" placeholder="Write a message to be hand-written on a card..." 
+                style="width: 100%; border: 1px solid #ddd; border-radius: 12px; padding: 12px; font-family: inherit; height: 80px;"></textarea>
+        </div>
+
+        <div style="text-align: center;">
+            <button class="checkout-btn" onclick="goToPayment()">Proceed to Secure Checkout</button>
+        </div>
+    </div>
+</div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function renderCartPage() {
+            const container = document.getElementById("cart-page-items");
+            let html = "";
+            let total = 0;
+
+            if (cart.length === 0) {
+                container.innerHTML = "<h3>Your cart is empty!</h3>";
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                let itemTotal = item.price * item.qty;
+                total += itemTotal;
+                html +=` 
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0;">
+                        <div>
+                            <strong style="font-size: 18px;">${item.name}</strong>
+                            <p style="color: #666;">₹${item.price} each</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <input type="number" value="${item.qty}" min="1" onchange="updateQty(${index}, this.value)" style="width: 50px; padding: 5px;">
+                            <button onclick="removeItem(${index})" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 5px;">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            document.getElementById("cart-page-total").innerText = "₹" + total;
+        }
+
+        function updateQty(index, newQty) {
+            cart[index].qty = parseInt(newQty);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCartPage();
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+            renderCartPage();
+        }
+
+        function goToPayment() {
+            const note = document.getElementById("gift-note").value;
+            localStorage.setItem("orderNote", note); // Save note for the next page
+            window.location.href = "checkout.html";
+        }
+
+        window.onload = renderCartPage;
+    </script>
+</body>
+</html>
