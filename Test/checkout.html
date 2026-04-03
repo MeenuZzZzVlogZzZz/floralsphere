@@ -35,20 +35,6 @@
     </div>
 
     <script>
-        function showPaymentOptions() {
-            const total = calculateTotal(); // Make sure this helper function is in your script
-            const upiID = "yourname@okicici"; // Replace with your actual UPI ID
-    
-            const paymentHTML =`
-                <div style="border: 2px solid #4b4f7c; padding: 20px; border-radius: 15px; background: #f8f9ff;">
-                    <p>Please pay <strong>₹${total}</strong> to:</p>
-                    <h3 style="color: #4b4f7c;">${upiID}</h3>
-                    <p style="font-size: 12px; color: #777;">(Take a screenshot of the payment to share on WhatsApp)</p>
-                </div>
-            `;
-            document.getElementById("payment-area").innerHTML = paymentHTML;
-        }
-
         function finalWhatsAppPay() {
             const btn = event.target;
             btn.innerText = "Processing Order... 🌸";
