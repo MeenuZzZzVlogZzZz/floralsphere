@@ -184,7 +184,7 @@
                 const enteredPass = document.getElementById("login-pass").value;
                 const storedUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
 
-                if (enteredName === 'admin' && enteredPass === 'admin123') {
+                if (enteredName === 'admin' && md5(enteredPass) === '0192023a7bbd73250516f069df18b500') {
                     currentUser = 'admin';
                 } else {
                     const validUser = storedUsers.find(u => u.username === enteredName && u.password === enteredPass);
