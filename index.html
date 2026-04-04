@@ -1,175 +1,274 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Floral Sphere</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-        <link rel="stylesheet" href="style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-        <link rel="icon" href="logo.png">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Floral Sphere | Artisan Paper Crafts</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Essential UI Fixes */
+        #assistant-name { font-family: 'Dancing Script', cursive; font-size: 24px; color: #fff; }
+        .product { border: 1px solid #eee; padding: 15px; border-radius: 15px; text-align: center; background: white; transition: 0.3s; }
+        .product:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .status-badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; margin: 8px 0; }
+    </style>
+</head>
+<body>
 
-        <style>
-            #assistant-name { font-family: 'Dancing Script', cursive; font-size: 24px; color: #fff; margin: 0; }
-            #close-chat-btn { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 20px; font-weight: bold; cursor: pointer; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
-            #close-chat-btn:hover { background: rgba(255,255,255,0.4); }
-        </style>
-    </head>
-    <body>
+    <header class="header">
+        <div class="top-bar">
+            <img src="logo.png" class="nav-logo" alt="logo" style="width: 60px;">
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 35px;">Floral Sphere</h2>
+        </div>
+        <div class="navbar">
+            <input type="text" id="search" placeholder="Search flowers..." onkeyup="searchProduct()">
+            <button onclick="window.location.href='cart.html'">Cart 🛒<span id="cart-count">0</span></button>
+        </div>
+    </header>
 
-        <header class="header">
-            <div class="top-bar">
-                <a href="index.html"><img src="logo.png" class="nav-logo" alt="logo" style="width: 80px;"></a>
-                <h2>Floral Sphere</h2>
-            </div>
-            <p class="tagline" style="color: #ddd; margin-bottom: 10px; font-size: 14px;">Premium Floral Craft Collection</p>
-            <div class="navbar">
-                <input type="text" id="search" placeholder="Search handcrafted flowers..." onkeyup="searchProduct()">
-                <button onclick="window.location.href='cart.html'">Cart 🛒<span id="cart-count" style="background: red; color: white; padding: 2px 6px; margin-left: 5px; border-radius: 50%; font-size: 12px;">0</span></button>
-            </div>
-        </header>
+    <div class="login-box" id="user-section" style="text-align: center; padding: 20px;"></div>
 
-        <h2 style="text-align: center; margin-top: 30px;">Our Collection</h2>
+    <h2 style="text-align: center; font-family: 'Playfair Display', serif;">Our Collection</h2>
+    
+    <div class="products" id="product-grid">
+        </div>
 
-        <div class="login-box" id="login-container">
-            </div>
+    <div id="no-results" style="display: none; text-align: center; padding: 50px;">
+        <p>No flowers found matching that name. Try 'Rose' or 'Garland'!</p>
+    </div>
 
-        <div class="products">
-            <div id="no-results" style="display: none; text-align: center; width: 100%; margin-top: 20px;">
-                <p style="color: #777; font-size: 18px;">Oops! We couldn't find any flowers matching that name.</p>
-            </div>
-            </div>
+    <section id="about-section" style="padding: 40px 20px; text-align: center; background: #fffafa;">
+        <img src="flower.png" style="max-width: 200px; margin-bottom: 20px;">
+        <p style="max-width: 700px; margin: auto; line-height: 1.6;"><em><strong>Floral craft</strong> is a creative art form... Every piece is handmade with premium materials.</em></p>
+    </section>
 
-        <section style="padding: 40px 20px; max-width: 800px; margin: auto; line-height: 1.8;">
-            <img src="flower.png" width="300" alt="Flower image" style="display: block; margin: auto;">
-            <p><em><strong>Floral craft</strong> is a creative art form that involves designing and arranging flowers...</em></p>
-        </section>
+    <div id="admin-panel" style="display: none; padding: 30px; background: #f4f4f4; border-top: 2px solid #4b4f7c;">
+        <h2 style="text-align:center;">Admin Dashboard</h2>
+        
+        <div id="admin-product-manager" style="max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 10px;">
+            <h3>Manage Shop Products</h3>
+            <input type="hidden" id="edit-product-index" value="-1">
+            <input type="text" id="new-product-name" placeholder="Product Name" style="width:90%; padding:10px; margin:5px;">
+            <input type="number" id="new-product-price" placeholder="Price (₹)" style="width:90%; padding:10px; margin:5px;">
+            <input type="number" id="product-stock" placeholder="Stock (0 for Made to Order)" style="width:90%; padding:10px; margin:5px;">
+            <input type="text" id="product-material" placeholder="Material (e.g. Crepe Paper)" style="width:90%; padding:10px; margin:5px;">
+            <input type="text" id="new-product-img" placeholder="Image Name (logo.png)" style="width:90%; padding:10px; margin:5px;">
+            <button id="save-btn" onclick="adminSaveProduct()" style="width:100%; padding:12px; background:#27ae60; color:white; border:none; border-radius:5px; cursor:pointer;">Save Product</button>
+        </div>
 
-        <form id="signupForm" onsubmit="registerUser(event)">
-            <h3>Join our Community</h3>
-            <input id="username" type="text" placeholder="Username" required>
-            <input id="reg-password" type="password" placeholder="Password (Min 6 chars)" minlength="6" required>
-            <input type="email" placeholder="Email Address" required>
-            <button type="submit" id="submitBtn">Create Account</button>
-        </form>
-
-        <script>
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            let currentUser = localStorage.getItem("user") || null;
-            let products = JSON.parse(localStorage.getItem("shopProducts")) || [
-                { name: "Rose Bouquet", price: 499, img: "logo.png" },
-                { name: "Wedding Garland", price: 999, img: "logo.png" },
-                { name: "Decor Basket", price: 799, img: "logo.png" }
-            ];
-
-            window.onload = function() {
-                displayUser(currentUser);
-                displayProducts();
-                updateCartBadge();
-            };
-
-            function displayUser(name) {
-                const box = document.getElementById("login-container");
-                const adminPanel = document.getElementById("admin-panel");
-                if (name) {
-                    box.innerHTML = `<h3>Welcome, ${name}!</h3><button onclick="logout()" style="background: #e74c3c;">Logout</button>`;
-                    if (name === 'admin') { adminPanel.style.display = "block"; renderAdminTable(); }
-                } else {
-                    box.innerHTML = `<input type="text" id="login-user" placeholder="Username">
-                                     <input type="password" id="login-pass" placeholder="Password">
-                                     <button onclick="login()">Login</button>`;
-                }
-            }
-
-            function login() {
-                const name = document.getElementById("login-user").value.trim();
-                const pass = document.getElementById("login-pass").value;
-                const stored = JSON.parse(localStorage.getItem("allUsers")) || [];
-                
-                if (name === 'admin' && md5(pass) === '0192023a7bbd73250516f069df18b500') {
-                    currentUser = 'admin';
-                } else {
-                    const user = stored.find(u => u.username === name && u.password === pass);
-                    if (user) { currentUser = name; } 
-                    else { alert("Invalid credentials!"); return; }
-                }
-                localStorage.setItem("user", currentUser);
-                location.reload();
-            }
-
-            function logout() { localStorage.removeItem("user"); location.reload(); }
-
-            function displayProducts() {
-                const grid = document.querySelector(".products");
-                let html = "";
-                products.forEach((p, index) => {
-                    const isReady = p.stock > 0;
-                    html += `<div class="product">
-                        <img src="${p.img}">
-                        <h3>${p.name}</h3>
-                        <div style="background: ${isReady ? '#d4edda' : '#fff3cd'}; padding: 4px; border-radius: 10px; font-size: 11px;">
-                            ${isReady ? 'Ready to Ship' : 'Made to Order'}
-                        </div>
-                        <p>₹${p.price}</p>
-                        <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
-                        ${currentUser === 'admin' ? `<button onclick="deleteProduct(${index})" style="background:red; font-size:10px;">Delete</button>` : ''}
-                    </div>`;
-                });
-                grid.innerHTML = html;
-            }
-
-            function addToCart(name, price) {
-                if (!currentUser) { alert("Please login first!"); return; }
-                let item = cart.find(i => i.name === name);
-                if (item) { item.qty++; } else { cart.push({name, price, qty: 1}); }
-                localStorage.setItem("cart", JSON.stringify(cart));
-                updateCartBadge();
-                alert(name + " added!");
-            }
-
-            function updateCartBadge() {
-                let count = cart.reduce((acc, item) => acc + item.qty, 0);
-                document.getElementById("cart-count").innerText = count;
-            }
-
-            function searchProduct() {
-                let val = document.getElementById("search").value.toLowerCase();
-                document.querySelectorAll(".product").forEach(p => {
-                    p.style.display = p.querySelector("h3").innerText.toLowerCase().includes(val) ? "block" : "none";
-                });
-            }
-        </script>
-
-        <div id="admin-panel" style="display: none; padding: 20px; background: #eee;">
-            <h2>Admin Dashboard</h2>
-            <div id="admin-product-manager">
-                <input type="text" id="new-product-name" placeholder="Name">
-                <input type="number" id="new-product-price" placeholder="Price">
-                <button onclick="adminSaveProduct()">Add Product</button>
-            </div>
-            <table id="user-table" style="width: 100%; margin-top: 20px; background: white;">
-                <thead><tr><th>User</th><th>Email</th></tr></thead>
+        <div style="margin-top: 30px;">
+            <h3>Registered Users</h3>
+            <table border="1" style="width: 100%; background: white; border-collapse: collapse;">
+                <thead><tr style="background:#4b4f7c; color:white;"><th>User</th><th>Email</th><th>Action</th></tr></thead>
                 <tbody id="user-table-body"></tbody>
             </table>
         </div>
+    </div>
 
-        <div id="ai-chat-bubble" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #4b4f7c; color: white; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 1000;">🤖 Help</div>
-        <div id="ai-chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); flex-direction: column; z-index: 1001; border-radius: 10px;">
-            <div style="background: #4b4f7c; color: white; padding: 10px;">Aura Assistant</div>
-            <div id="chat-messages" style="flex: 1; padding: 10px; overflow-y: auto;"></div>
-            <div style="padding: 10px; border-top: 1px solid #eee;">
-                <input type="text" id="chat-input" placeholder="Ask about materials..." style="width: 70%;">
-                <button onclick="askAI()">Send</button>
-            </div>
+    <form id="signupForm" onsubmit="registerUser(event)" style="max-width: 400px; margin: 40px auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+        <h3>New here? Create Account</h3>
+        <input id="username" type="text" placeholder="Name" required style="width:90%; padding:8px; margin:5px;">
+        <input id="reg-password" type="password" placeholder="Password (6+ chars)" minlength="6" required style="width:90%; padding:8px; margin:5px;">
+        <input type="email" id="reg-email" placeholder="Email" required style="width:90%; padding:8px; margin:5px;">
+        <button type="submit" style="width:95%; padding:10px; background:#4b4f7c; color:white; border:none; cursor:pointer;">Signup</button>
+    </form>
+
+    <div id="ai-chat-bubble" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #4b4f7c; color: white; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 1000;">🌸 Help</div>
+    <div id="ai-chat-window" style="display: none; position: fixed; bottom: 85px; right: 20px; width: 300px; height: 400px; background: white; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); z-index: 1001; flex-direction: column;">
+        <div style="background:#4b4f7c; color:white; padding:10px; border-radius:15px 15px 0 0; display:flex; justify-content:space-between;">
+            <span>Aura Assistant</span><button onclick="toggleChat()" style="background:none; border:none; color:white; cursor:pointer;">&times;</button>
         </div>
+        <div id="chat-messages" style="flex:1; padding:10px; overflow-y:auto; font-size:14px;"></div>
+        <div id="quick-options" style="padding:5px; background:#f9f9f9; display:flex; gap:5px; flex-wrap:wrap;">
+            <button onclick="handleQuickOption('Material')" style="font-size:10px;">Materials</button>
+            <button onclick="handleQuickOption('Delivery')" style="font-size:10px;">Delivery</button>
+        </div>
+        <div style="padding:10px; border-top:1px solid #eee; display:flex;">
+            <input type="text" id="chat-input" placeholder="Ask me..." style="flex:1; padding:5px;">
+            <button onclick="askAI()" style="background:#4b4f7c; color:white; border:none; padding:5px 10px;">Send</button>
+        </div>
+    </div>
 
-        <section id="about-artist" style="background: #fffafa; padding: 40px 20px; text-align: center;">
-            <h2 style="font-family: 'Dancing Script', cursive; font-size: 32px;">Meet the Maker</h2>
-            <p>I'm the artist behind Floral Sphere. Every rose is hand-cut with love.</p>
-            <a href="https://youtube.com/@snehameenu">YouTube</a> | <a href="https://instagram.com/meenuzzzz_vlogzzzz">Instagram</a>
-        </section>
+    <section id="about-artist" style="background: #fffafa; padding: 40px 20px; text-align: center; border-top: 1px solid #ffe1e1;">
+        <h2 style="font-family: 'Dancing Script', cursive; font-size: 32px; color: #4b4f7c;">Meet the Maker</h2>
+        <p>Hi! I'm the artist behind Floral Sphere. Every paper rose is hand-cut by me.</p>
+        <div>
+            <a href="https://youtube.com/@snehameenu" style="color:red; margin:10px;">YouTube</a>
+            <a href="https://instagram.com/meenuzzzz_vlogzzzz" style="color:deeppink; margin:10px;">Instagram</a>
+        </div>
+    </section>
 
-        <footer style="text-align: center; padding: 20px; color: #777; border-top: 1px solid #eee;">
-            MeenuZzZz VlogZzZz © 2026
-        </footer>
-    </body>
+    <footer style="text-align: center; padding: 20px; color: #777;">MeenuZzZz VlogZzZz © 2026</footer>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        let currentUser = localStorage.getItem("user") || null;
+        let products = JSON.parse(localStorage.getItem("shopProducts")) || [
+            { name: "Rose Bouquet", price: 499, img: "logo.png", stock: 5, material: "Crepe Paper" },
+            { name: "Wedding Garland", price: 999, img: "logo.png", stock: 0, material: "Italian Paper" },
+            { name: "Decor Basket", price: 799, img: "logo.png", stock: 2, material: "Cardstock" }
+        ];
+
+        window.onload = function() {
+            displayUser(currentUser);
+            displayProducts();
+            updateCartBadge();
+        };
+
+        function displayUser(name) {
+            const section = document.getElementById("user-section");
+            const adminPanel = document.getElementById("admin-panel");
+            if (name) {
+                section.innerHTML = `<h3>Welcome, ${name}!</h3><button onclick="logout()" style="background:#e74c3c; color:white; border:none; padding:5px 10px; cursor:pointer;">Logout</button>`;
+                if (name === 'admin') { adminPanel.style.display = "block"; renderAdminTable(); }
+            } else {
+                section.innerHTML = `<input type="text" id="login-user" placeholder="User"> <input type="password" id="login-pass" placeholder="Pass"> <button onclick="login()" style="background:#4b4f7c; color:white; border:none; padding:5px 10px; cursor:pointer;">Login</button>`;
+            }
+        }
+
+        function login() {
+            const user = document.getElementById("login-user").value.trim();
+            const pass = document.getElementById("login-pass").value;
+            const stored = JSON.parse(localStorage.getItem("allUsers")) || [];
+
+            if (user === 'admin' && md5(pass) === '0192023a7bbd73250516f069df18b500') {
+                currentUser = 'admin';
+            } else {
+                const found = stored.find(u => u.username === user && u.password === pass);
+                if (found) { currentUser = user; } else { alert("Error: User not found!"); return; }
+            }
+            localStorage.setItem("user", currentUser);
+            location.reload();
+        }
+
+        function logout() { localStorage.removeItem("user"); location.reload(); }
+
+        function displayProducts() {
+            const grid = document.getElementById("product-grid");
+            let html = "";
+            products.forEach((p, index) => {
+                const isReady = p.stock > 0;
+                html += `
+                <div class="product">
+                    <img src="${p.img}" style="width:100%; border-radius:10px;">
+                    <h3>${p.name}</h3>
+                    <span class="status-badge" style="background:${isReady?'#d4edda':'#fff3cd'}; color:${isReady?'#155724':'#856404'};">${isReady?'Ready':'Made to Order'}</span>
+                    <p style="font-size:12px; color:#777;">Material: ${p.material || 'Paper'}</p>
+                    <p><strong>₹${p.price}</strong></p>
+                    <button onclick="addToCart('${p.name}', ${p.price})" style="background:#4b4f7c; color:white; border:none; padding:10px; border-radius:5px; cursor:pointer;">Add to Cart</button>
+                    ${currentUser === 'admin' ? `<br><button onclick="prepareEdit(${index})" style="background:#3498db; margin-top:5px; font-size:10px;">Edit</button> <button onclick="deleteProduct(${index})" style="background:#e74c3c; margin-top:5px; font-size:10px;">Delete</button>` : ''}
+                </div>`;
+            });
+            grid.innerHTML = html;
+        }
+
+        function addToCart(name, price) {
+            if (!currentUser) { alert("Please login first!"); return; }
+            let item = cart.find(i => i.name === name);
+            if (item) { item.qty++; } else { cart.push({name, price, qty: 1}); }
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartBadge();
+            alert(name + " added!");
+        }
+
+        function updateCartBadge() {
+            let count = cart.reduce((total, item) => total + item.qty, 0);
+            document.getElementById("cart-count").innerText = count;
+        }
+
+        function searchProduct() {
+            let val = document.getElementById("search").value.toLowerCase();
+            let count = 0;
+            document.querySelectorAll(".product").forEach(p => {
+                const match = p.querySelector("h3").innerText.toLowerCase().includes(val);
+                p.style.display = match ? "block" : "none";
+                if(match) count++;
+            });
+            document.getElementById("no-results").style.display = count === 0 ? "block" : "none";
+        }
+
+        // ADMIN FUNCTIONS
+        function adminSaveProduct() {
+            const name = document.getElementById("new-product-name").value;
+            const price = parseInt(document.getElementById("new-product-price").value);
+            const stock = parseInt(document.getElementById("product-stock").value) || 0;
+            const mat = document.getElementById("product-material").value;
+            const img = document.getElementById("new-product-img").value || "logo.png";
+            const index = parseInt(document.getElementById("edit-product-index").value);
+
+            const pData = { name, price, stock, material: mat, img };
+            if (index === -1) products.push(pData); else products[index] = pData;
+            
+            localStorage.setItem("shopProducts", JSON.stringify(products));
+            location.reload();
+        }
+
+        function deleteProduct(i) { if(confirm("Delete product?")){ products.splice(i,1); localStorage.setItem("shopProducts", JSON.stringify(products)); displayProducts(); }}
+
+        function prepareEdit(i) {
+            const p = products[i];
+            document.getElementById("new-product-name").value = p.name;
+            document.getElementById("new-product-price").value = p.price;
+            document.getElementById("product-stock").value = p.stock;
+            document.getElementById("product-material").value = p.material;
+            document.getElementById("edit-product-index").value = i;
+            document.getElementById("save-btn").innerText = "Update Product";
+        }
+
+        function renderAdminTable() {
+            const users = JSON.parse(localStorage.getItem("allUsers")) || [];
+            let rows = "";
+            users.forEach((u, i) => { rows += `<tr><td>${u.username}</td><td>${u.email}</td><td><button onclick="deleteUser(${i})" style="background:red; color:white;">Delete</button></td></tr>`; });
+            document.getElementById("user-table-body").innerHTML = rows || "<tr><td colspan='3'>No users found.</td></tr>";
+        }
+
+        function deleteUser(i) { let u = JSON.parse(localStorage.getItem("allUsers")); u.splice(i,1); localStorage.setItem("allUsers", JSON.stringify(u)); renderAdminTable(); }
+
+        function registerUser(e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("reg-password").value;
+            const email = document.getElementById("reg-email").value;
+            let users = JSON.parse(localStorage.getItem("allUsers")) || [];
+            users.push({ username, password, email });
+            localStorage.setItem("allUsers", JSON.stringify(users));
+            alert("Account created! Now login.");
+            e.target.reset();
+        }
+
+        // CHATBOT FUNCTIONS
+        function toggleChat() { 
+            const chat = document.getElementById("ai-chat-window");
+            chat.style.display = (chat.style.display === "none" || chat.style.display === "") ? "flex" : "none";
+        }
+
+        function askAI() {
+            const input = document.getElementById("chat-input");
+            const msgs = document.getElementById("chat-messages");
+            const query = input.value.toLowerCase();
+            if (!query) return;
+
+            msgs.innerHTML += `<div style="text-align:right; background:#e1e5ff; padding:8px; border-radius:10px; margin:5px;">${input.value}</div>`;
+            
+            const knowledge = [
+                { tags: ["material", "paper", "made of"], reply: "We use premium crepe paper and cardstock. They last forever!" },
+                { tags: ["custom", "color"], reply: "Yes! You can request custom colors in the order notes." },
+                { tags: ["delivery", "time", "days"], reply: "Crafting takes 1-2 days. Total delivery is 5-7 days." }
+            ];
+
+            let reply = "I'm not sure about that. Try asking about 'materials' or 'delivery'!";
+            knowledge.forEach(k => { k.tags.forEach(t => { if(query.includes(t)) reply = k.reply; })});
+
+            setTimeout(() => {
+                msgs.innerHTML += `<div style="text-align:left; background:#f1f1f1; padding:8px; border-radius:10px; margin:5px;">${reply}</div>`;
+                msgs.scrollTop = msgs.scrollHeight;
+            }, 400);
+            input.value = "";
+        }
+
+        function handleQuickOption(txt) { document.getElementById("chat-input").value = txt; askAI(); }
+    </script>
+</body>
 </html>
