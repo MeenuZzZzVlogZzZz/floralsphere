@@ -2,700 +2,174 @@
 <html>
     <head>
         <title>Floral Sphere</title>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-        
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
         <link rel="stylesheet" href="style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
         <link rel="icon" href="logo.png">
-        <link rel="apple-touch-icon" href="logo.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <style>
-            #assistant-name {
-                font-family: 'Dancing Script', cursive; /* Beautiful handwritten font */
-                font-size: 24px;
-                color: #fff;
-                text-shadow: 1px 1px 3px rgba(0,0,0,0.3); /* Soft shadow for readability */
-                margin: 0;
-            }
-
-            #close-chat-btn {
-                background: rgba(255,255,255,0.2); /* Slight translucent background */
-                border: none;
-                color: white;
-                font-size: 20px;
-                font-weight: bold;
-                cursor: pointer;
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: background 0.3s ease;
-            }
-
-            #close-chat-btn:hover {
-                background: rgba(255,255,255,0.4); /* Darker on hover */
-            }
+            #assistant-name { font-family: 'Dancing Script', cursive; font-size: 24px; color: #fff; margin: 0; }
+            #close-chat-btn { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 20px; font-weight: bold; cursor: pointer; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; }
+            #close-chat-btn:hover { background: rgba(255,255,255,0.4); }
         </style>
-
     </head>
     <body>
 
         <header class="header">
             <div class="top-bar">
-                <img src="logo.png" class="nav-logo" alt="logo">
+                <a href="index.html"><img src="logo.png" class="nav-logo" alt="logo" style="width: 80px;"></a>
                 <h2>Floral Sphere</h2>
             </div>
-
+            <p class="tagline" style="color: #ddd; margin-bottom: 10px; font-size: 14px;">Premium Floral Craft Collection</p>
             <div class="navbar">
-                <input type="text" id="search" placeholder="Search" onkeyup="searchProduct()">
+                <input type="text" id="search" placeholder="Search handcrafted flowers..." onkeyup="searchProduct()">
                 <button onclick="window.location.href='cart.html'">Cart 🛒<span id="cart-count" style="background: red; color: white; padding: 2px 6px; margin-left: 5px; border-radius: 50%; font-size: 12px;">0</span></button>
             </div>
         </header>
-    	<header>
-            <a href="index.html">
-                <img src="logo.png" alt="My Website Logo" class="logo">
-            </a>
-    		<p class="tagline">Premium Floral Craft Collection</p>
-    	</header>
 
-            <h2 style="text-align: center;">Our Collection</h2>
+        <h2 style="text-align: center; margin-top: 30px;">Our Collection</h2>
 
-        <div class="login-box">
-            <input type="text" id="user" placeholder="Enter Name">
-            <input type="password" id="reg-password" placeholder="Enter Password">
-            <button onclick="login()">Login</button>
-        </div>
+        <div class="login-box" id="login-container">
+            </div>
+
         <div class="products">
             <div id="no-results" style="display: none; text-align: center; width: 100%; margin-top: 20px;">
-                <img src="https://cdn-icons-png.flaticon.com/512/6134/6134065.png" width="100" alt="Not found">
                 <p style="color: #777; font-size: 18px;">Oops! We couldn't find any flowers matching that name.</p>
             </div>
-        	<div class="product">
-        		<img src="logo.png">
-        		<h3>Rose Bouquet</h3>
-        		<p class="price">₹499</p>
-        		<button id="buy" onclick="addToCart('Rose Bouquet',499)">Add to Cart</button>
-        	</div>
-        	<div class="product">
-        		<img src="logo.png">
-        		<h3>Wedding Garland</h3>
-        		<p class="price">₹999</p>
-        		<button id="buy" onclick="addToCart('Wedding Garland',999)">Add to Cart</button>
-        	</div>
-        	<div class="product">
-        		<img src="logo.png">
-        		<h3>Decor Basket</h3>
-        		<p class="price">₹799</p>
-        		<button id="buy" onclick="addToCart('Decor Basket',799)">Add to Cart</button>
-        	</div>
-        </div>
-
-        <div class="cart-box">
-            <h2>Your Cart</h2>
-            <div id="cartItems">No items yet</div>
-            <h3 id="total">Total: ₹0</h3>
-    
-            <div style="display: flex; gap: 10px; justify-content: center;">
-                <button onclick="checkout()">Checkout</button>
-                <button onclick="clearCart()" style="background-color: #f39c12;">Clear Cart</button>
             </div>
-        </div>
-        
-        <img src="flower.png" width="500" alt="Flower image">
-        <p><em><strong>Floral craft</strong> is a creative art form that involves designing and arranging flowers, leaves, and other natural materials into beautiful patterns and decorations. It is often used for making bouquets, garlands, wreaths, and decorative pieces for homes, events, and celebrations. <strong>Floral craft</strong> not only enhances aesthetic beauty but also allows individuals to express their creativity and appreciation for nature. Different colors, shapes, and textures of flowers are carefully combined to create visually pleasing designs. This craft can be practiced as a hobby or a profession, and it also has cultural significance in many traditions around the world.</em></p>
+
+        <section style="padding: 40px 20px; max-width: 800px; margin: auto; line-height: 1.8;">
+            <img src="flower.png" width="300" alt="Flower image" style="display: block; margin: auto;">
+            <p><em><strong>Floral craft</strong> is a creative art form that involves designing and arranging flowers...</em></p>
+        </section>
 
         <form id="signupForm" onsubmit="registerUser(event)">
-            <h3>Signup</h3>
-            <label for="username">Username</label>
-            <input id="username" type="text" name="username" placeholder="Enter your Name" required>
-    
-            <label for="reg-password">Password</label>
-            <input id="reg-password" type="password" name="password" placeholder="Min 6 characters" minlength="6" required>
-    
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter your Email" required>
-    
-            <label>Gender</label>
-            <select name="gender" required>
-                <option value="" disabled selected>Select Gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-            </select>
+            <h3>Join our Community</h3>
+            <input id="username" type="text" placeholder="Username" required>
+            <input id="reg-password" type="password" placeholder="Password (Min 6 chars)" minlength="6" required>
+            <input type="email" placeholder="Email Address" required>
             <button type="submit" id="submitBtn">Create Account</button>
         </form>
 
         <script>
-            const form=
-            document.querySelector("form");
-            const button=
-            document.querySelector("#submitBtn");
-
-            form.addEventListener("input", () => {
-                if (form.checkValidity()) {
-                    button.disabled = false;
-                } else {
-                    button.disabled = true;
-                }
-            });
-        </script>
-
-        <script>
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
             let currentUser = localStorage.getItem("user") || null;
-
-            window.onload = function() {
-                displayUser(currentUser);
-                updateCart();
-            };
-
-            function displayUser(name) {
-                const loginBox = document.querySelector(".login-box");
-                const adminPanel = document.getElementById("admin-panel");
-
-                if (name) {
-                    loginBox.innerHTML =` 
-                    <h3>Welcome, ${name}!</h3>
-                    <button onclick="logout()" style="background: #e74c3c; color: white;">Logout</button>
-                    `;
-        
-                    if (name.toLowerCase() === 'admin') {
-                        adminPanel.style.display = "block";
-                        renderAdminTable();
-                    } else {
-                        adminPanel.style.display = "none";
-                    }
-                } else {
-                    loginBox.innerHTML =` 
-                    <input type="text" id="login-user" placeholder="Username">
-                    <input type="password" id="login-pass" placeholder="Password">
-                    <button onclick="login()">Login</button>
-                    `;
-                    adminPanel.style.display = "none";
-                }
-            }
-
-            
-            function renderAdminTable() {
-                const users = JSON.parse(localStorage.getItem("allUsers")) || [];
-                const tableBody = document.getElementById("user-table-body");
-                let rows = "";
-
-                users.forEach(u => {
-                    rows +=` 
-                    <tr>
-                        <td style="padding: 10px;">${u.username}</td>
-                        <td style="padding: 10px;">${u.email}</td>
-                    </tr>`;
-                });
-
-                tableBody.innerHTML = rows || "<tr><td colspan='2' style='text-align:center;'>No users registered yet.</td></tr>";
-            }
-            function logout() {
-                localStorage.removeItem("user");
-                currentUser = null;
-                displayUser(null);
-                location.reload(); // Refreshes to clear admin view
-            }
-
-            function registerUser(event) {
-                event.preventDefault();
-                const name = document.getElementById("username").value.trim();
-                const pass = document.getElementById("reg-password").value;
-                const email = document.querySelector('input[name="email"]').value;
-
-                let usersList = JSON.parse(localStorage.getItem("allUsers")) || [];
-                usersList.push({ username: name, password: pass, email: email });
-                localStorage.setItem("allUsers", JSON.stringify(usersList));
-    
-                alert("Signup successful! Try logging in now.");
-                document.getElementById("signupForm").reset();
-            }
-
-            function renderAdminTable() {
-                const users = JSON.parse(localStorage.getItem("allUsers")) || [];
-                const tableBody function login() {
-    const enteredName = document.getElementById("login-user").value.trim();
-    const enteredPass = document.getElementById("login-pass").value;
-    const storedUsers = JSON.parse(localStorage.getItem("allUsers")) || [];
-
-    // 1. Check Admin with MD5 Hash
-    if (enteredName === 'admin' && md5(enteredPass) === '0192023a7bbd73250516f069df18b500') {
-        currentUser = 'admin';
-    } 
-    // 2. Check Regular Users (Plain Text for now)
-    else {
-        const validUser = storedUsers.find(u => u.username === enteredName && u.password === enteredPass);
-        if (validUser) {
-            currentUser = enteredName;
-        } else {
-            alert("Invalid credentials. Please Sign Up first!");
-            return;
-        }
-    }
-
-    // 3. Save session and refresh
-    localStorage.setItem("user", currentUser);
-    displayUser(currentUser);
-    alert("Welcome back, " + currentUser);
-    
-    // If admin, show the admin panel immediately
-    if (currentUser === 'admin') {
-        location.reload(); 
-    }
-}
-= document.getElementById("user-table-body");
-    
-                let rows = "";
-                users.forEach((u, index) => {
-                    rows +=`
-                    <tr>
-                        <td>${u.username}</td>
-                        <td>${u.email}</td>
-                        <td>
-                            <button onclick="deleteUser(${index})" style="background:red; color:white; padding:5px;">Delete</button>
-                        </td>
-                    </tr>`;
-                });
-                tableBody.innerHTML = rows || "<tr><td colspan='3'>No users found.</td></tr>";
-            }
-
-            function deleteUser(index) {
-                let users = JSON.parse(localStorage.getItem("allUsers")) || [];
-                if (confirm("Are you sure you want to delete " + users[index].username + "?")) {
-                    users.splice(index, 1);
-                    localStorage.setItem("allUsers", JSON.stringify(users));
-                    renderAdminTable(); // Refresh the table
-                }
-            }
-        </script>
-
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-        <script>
-            function checkout() {
-                if (cart.length === 0) {
-                    alert("Your cart is empty! Add some paper flowers first.");
-                    return;
-                }
-
-                let total = 0;
-                let orderDetails = "🌸 *New Order: Floral Sphere* 🌸\n\n";
-
-                cart.forEach(item => {
-                    let itemTotal = item.price * item.qty; // Changed 'quantity' to 'qty' to match your data
-                    total += itemTotal;
-                    orderDetails += `• ${item.name} (x${item.qty}) - ₹${itemTotal}\n`;
-                });
-
-                const note = document.getElementById("gift-note") ? document.getElementById("gift-note").value : "";
-                orderDetails += `\n*Total: ₹${total}*`;
-
-                if (note.trim() !== "") {
-                    orderDetails += `\n\n*Gift Note:* ${note}`;
-                }
-
-                const myNumber = "919207693271"; 
-                const whatsappUrl = `https://wa.me/${myNumber}?text=${encodeURIComponent(orderDetails)}`;
-
-                window.open(whatsappUrl, '_blank');
-
-                alert("Opening WhatsApp to send your order details!");
-                cart = []; // Optional: Clear cart after order
-                saveCart();
-                updateCart();
-            }
-        </script>
-        <script>
-            function searchProduct() {
-                let input = document.getElementById("search").value.toLowerCase();
-                let products = document.querySelectorAll(".product");
-                let noResults = document.getElementById("no-results");
-                let visibleCount = 0;
-
-                products.forEach(p => {
-                    let name = p.querySelector("h3").innerText.toLowerCase();
-        
-                    if (name.includes(input)) {
-                        p.style.display = "block";
-                        visibleCount++;
-                    } else {
-                        p.style.display = "none";
-                    }
-                });
-
-                if (visibleCount === 0) {
-                    noResults.style.display = "block";
-                } else {
-                    noResults.style.display = "none";
-                }
-            }
-        </script>
-        <script>
-            function addToCart(name, price) {
-                if (!currentUser) {
-                    alert("Please login first!");
-                    return;
-                }
-
-                let existingItem = cart.find(item => item.name === name);
-
-                if (existingItem) {
-                    existingItem.qty += 1;
-                } else {
-                    cart.push({ name: name, price: price, qty: 1 });
-                }
-
-                localStorage.setItem("cart", JSON.stringify(cart));
-                updateCart(); 
-                alert(name + " added to cart!");
-            }
-
-            function updateCart() {
-                let cartHTML = "";
-                let total = 0;
-                let itemCount = 0; // Track total quantity of items
-
-                cart.forEach((item, index) => {
-                let itemTotal = item.price * item.qty;
-                total += itemTotal;
-                itemCount += item.qty; // Add up the quantities
-        
-                cartHTML +=`
-                    <div class="cart-item" style="border-bottom: 1px solid #eee; padding: 10px 0; text-align: left;">
-                        <strong>${item.name}</strong> - ₹${item.price} x ${item.qty}
-                        <div style="margin-top: 5px;">
-                            <button onclick="removeItem(${index})" style="background: #e74c3c; color: white; border: none; padding: 2px 8px; border-radius: 4px; cursor: pointer;">Remove</button>
-                        </div>
-                    </div>
-                `;
-                });
-
-                document.getElementById("cartItems").innerHTML = cartHTML || "No items yet";
-                document.getElementById("total").innerText = "Total: ₹" + total;
-                document.getElementById("cart-count").innerText = itemCount; // Update the badge
-            }
-
-            function removeItem(index) {
-                cart.splice(index, 1); 
-                saveCart();
-                updateCart();
-            }
-
-            function clearCart() {
-                if (cart.length === 0) {
-                    alert("Your cart is already empty!");
-                    return;
-                }
-
-                if (confirm("Are you sure you want to clear your entire cart?")) {
-                    cart = []; 
-                    saveCart();
-                    updateCart();
-                }
-            }
-            function saveCart() {
-                localStorage.setItem("cart", JSON.stringify(cart));
-            }
-        </script>
-        <script>
             let products = JSON.parse(localStorage.getItem("shopProducts")) || [
                 { name: "Rose Bouquet", price: 499, img: "logo.png" },
                 { name: "Wedding Garland", price: 999, img: "logo.png" },
                 { name: "Decor Basket", price: 799, img: "logo.png" }
             ];
 
-            function displayProducts() {
-                const productGrid = document.querySelector(".products");
-                let html = "";
-
-                products.forEach((p, index) => {
-                    const isReady = p.stock && parseInt(p.stock) > 0;
-                    const statusText = isReady ? "Ready to Ship" : "Made to Order (2-3 days)";
-                    const bgColor = isReady ? "#d4edda" : "#fff3cd"; // Light Green vs Light Yellow
-                    const textColor = isReady ? "#155724" : "#856404"; // Dark Green vs Dark Brown
-
-
-                html +=`
-                <div class="product">
-                    <img src="${p.img}" alt="${p.name}">
-                    <h3>${p.name}</h3>
-                    <div style="background: ${bgColor}; color: ${textColor}; display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; margin: 8px 0;">
-                        ${statusText}
-                    </div>
-
-                    <p style="color:#666; font-size:13px;">Material: ${p.material || 'Paper'}</p>
-
-                    <p class="price" style="font-size: 18px;">₹${p.price}</p>
-                    <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
-                
-                    ${currentUser === 'admin' ?`
-                    <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px;">
-                        <button onclick="prepareEdit(${index})" style="background:#3498db; font-size:10px; display:inline-block; margin: 2px;">Edit</button>
-                        <button onclick="deleteProduct(${index})" style="background:#e74c3c; font-size:10px; display:inline-block; margin: 2px;">Delete</button>
-                    </div>
-                     `: ''}
-                </div>
-                `;
-                });
-                productGrid.innerHTML = html;
-            }
-
-            function adminAddProduct() {
-                const name = document.getElementById("new-product-name").value;
-                const price = document.getElementById("new-product-price").value;
-                const img = document.getElementById("new-product-img").value || "logo.png";
-
-                if (!name || !price) {
-                    alert("Please enter both name and price!");
-                    return;
-                }
-
-                products.push({ name, price: parseInt(price), img });
-                localStorage.setItem("shopProducts", JSON.stringify(products));
-    
-                displayProducts(); // Refresh the shop
-                alert(name + " added to the shop!");
-    
-                document.getElementById("new-product-name").value = "";
-                document.getElementById("new-product-price").value = "";
-            }
-
-            function deleteProduct(index) {
-                if(confirm("Remove this item from the shop?")) {
-                    products.splice(index, 1);
-                    localStorage.setItem("shopProducts", JSON.stringify(products));
-                    displayProducts();
-                }
-            }
-
             window.onload = function() {
                 displayUser(currentUser);
-                displayProducts(); // Load the shop items
-                updateCart();
-            };
-         
-            function prepareEdit(index) {
-                const p = products[index];
-                document.getElementById("new-product-name").value = p.name;
-                document.getElementById("new-product-price").value = p.price;
-                document.getElementById("new-product-img").value = p.img;
-                document.getElementById("product-material").value = p.material||"";
-                document.getElementById("edit-product-index").value = index;
-
-                document.getElementById("save-btn").innerText = "Update Product";
-                document.getElementById("cancel-btn").style.display = "block";
-    
-                document.getElementById("admin-product-manager").scrollIntoView({ behavior: 'smooth' });
-            }
-
-            function adminSaveProduct() {
-                const name = document.getElementById("new-product-name").value;
-                const price = parseInt(document.getElementById("new-product-price").value);
-                const img = document.getElementById("new-product-img").value || "logo.png";
-                const materialValue = document.getElementById("product-material").value;
-                const finalMaterial = materialValue.trim() !== "" ? materialValue : "Paper Craft";
-                const editIndex = parseInt(document.getElementById("edit-product-index").value);
-                const stock = document.getElementById("product-stock")?document.getElementById("product-stock").value:0;
-                const productData={
-                    name,
-                    price,
-                    img,
-                    material:finalMaterial,
-                    stock: parseInt(stock)
-                };
-
-                if (!name || !price) {
-                    alert("Please enter Name and Price!");
-                    return;
-                }
-
-                if (editIndex === -1) {
-                    products.push(productData);
-                    alert(name + " added!");
-                } else {
-                    products[editIndex] = productData;
-                    alert(name + " updated!");
-                }
-
-                localStorage.setItem("shopProducts", JSON.stringify(products));
-                clearProductForm();
                 displayProducts();
-            }
+                updateCartBadge();
+            };
 
-            function clearProductForm() {
-                document.getElementById("new-product-name").value = "";
-                document.getElementById("new-product-price").value = "";
-                document.getElementById("new-product-img").value = "";
-                document.getElementById("edit-product-index").value = "-1";
-                document.getElementById("save-btn").innerText = "Save Product";
-                document.getElementById("cancel-btn").style.display = "none";
-            }
-        </script>
-        <script>
-            function toggleChat() {
-                const chat = document.getElementById("ai-chat-window");
-                if (chat.style.display === "none" || chat.style.display === "") {
-                    chat.style.display = "flex";
+            function displayUser(name) {
+                const box = document.getElementById("login-container");
+                const adminPanel = document.getElementById("admin-panel");
+                if (name) {
+                    box.innerHTML = `<h3>Welcome, ${name}!</h3><button onclick="logout()" style="background: #e74c3c;">Logout</button>`;
+                    if (name === 'admin') { adminPanel.style.display = "block"; renderAdminTable(); }
                 } else {
-                    chat.style.display = "none";
+                    box.innerHTML = `<input type="text" id="login-user" placeholder="Username">
+                                     <input type="password" id="login-pass" placeholder="Password">
+                                     <button onclick="login()">Login</button>`;
                 }
             }
 
-            function askAI() {
-                const input = document.getElementById("chat-input");
-                const messages = document.getElementById("chat-messages");
-                const query = input.value.toLowerCase();
-
-                const craftKnowledge = [
-                    { tags: ["material", "paper", "made of"], reply: "Our bouquets are hand-crafted using premium crepe paper and eco-friendly cardstock. They last forever!" },
-                    { tags: ["custom", "color", "change"], reply: "Yes! Since every item is hand-made, you can request custom colors for your paper roses. Just mention it in the notes at checkout." },
-                    { tags: ["time", "long", "delivery"], reply: "Crafting a full bouquet takes 1-2 days. Including shipping, your order will reach you in 5-7 days." },
-                    { tags: ["real", "natural", "fresh"], reply: "Actually, we specialize in high-quality paper crafts! Our flowers look real but never wither, making them perfect keepsakes." }
-                ];
-
-                if (!query) return;
-
-                messages.innerHTML +=` 
-                    <div style="align-self: flex-end; background: #e1e5ff; padding: 10px; border-radius: 10px; max-width: 80%; font-size: 14px; margin-bottom: 5px;">
-                        ${input.value}
-                    </div>`;
-
-                let response = "I'm still learning! Try asking about 'materials' or 'custom colors'.";
-
-                craftKnowledge.forEach(item => {
-                    item.tags.forEach(tag => {
-                        if (query.includes(tag)){
-                            response= item.reply;
-                        }
-                    });
-                });
-
-                setTimeout(() => {
-                    messages.innerHTML +=` 
-                        <div style="align-self: flex-start; background: #f1f1f1; padding: 10px; border-radius: 10px; max-width: 80%; font-size: 14px; margin-bottom: 5px;">
-                            ${response}
-                        </div>`;
-        
-                    messages.scrollTop = messages.scrollHeight;
-                }, 400);
-
-                input.value = ""; // Clear the input box
+            function login() {
+                const name = document.getElementById("login-user").value.trim();
+                const pass = document.getElementById("login-pass").value;
+                const stored = JSON.parse(localStorage.getItem("allUsers")) || [];
+                
+                if (name === 'admin' && md5(pass) === '0192023a7bbd73250516f069df18b500') {
+                    currentUser = 'admin';
+                } else {
+                    const user = stored.find(u => u.username === name && u.password === pass);
+                    if (user) { currentUser = name; } 
+                    else { alert("Invalid credentials!"); return; }
+                }
+                localStorage.setItem("user", currentUser);
+                location.reload();
             }
 
-            document.getElementById("chat-input")?.addEventListener("keypress", function(e) {
-                    if (e.key === "Enter") askAI();
-            });
-        
-            function handleQuickOption(optionText) {
-                document.getElementById("chat-input").value = optionText;
-    
-                askAI();
-            }
+            function logout() { localStorage.removeItem("user"); location.reload(); }
 
-        </script>
-        <script>
-            function syncShop() {
-                const productGrid = document.querySelector(".products");
-                displayProducts(); 
-            }
-        </script>
-        
-            <div id="admin-panel" style="display: none; margin: 20px; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
-                <div id="admin-product-manager" style="background: #f9f9f9; padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 500px; border: 1px solid #ddd;">
-                    <h2>Admin Dashboard - Registered Users</h2>
-                    <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
-                        <thead>
-                            <tr style="background-color: #f2f2f2;">
-                                <th style="padding: 10px;">Username</th>
-                                <th style="padding: 10px;">Email</th>
-                            </tr>
-                        </thead>
-                        <tbody id="user-table-body"></tbody>
-                    </table>
-                    <h3 id="form-title">Add New Product</h3>
-    
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <input type="hidden" id="edit-product-index" value="-1">
-        
-                        <input type="text" id="new-product-name" placeholder="Product Name (e.g. Lily Bouquet)" style="padding: 10px;">
-                        <input type="number" id="new-product-price" placeholder="Price in ₹" style="padding: 10px;">
-                        <input type="number" id="product-stock" placeholder="Stock Quantity (0 for Made to Order)" style="padding: 10px;">
-                        <input type="text" id="product-material" placeholder="Material (e.g. Italian Crepe Paper)" style="padding: 10px;">
-                        <input type="text" id="new-product-img" placeholder="Image URL (e.g. logo.png)" style="padding: 10px;">
-        
-                        <div style="display: flex; gap: 10px;">
-                            <button id="save-btn" onclick="adminSaveProduct()" style="flex: 2; background: #27ae60; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">Add to Shop</button>
-                            <button id="cancel-btn" onclick="clearProductForm()" style="flex: 1; background: #95a5a6; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; display: none;">Cancel</button>
+            function displayProducts() {
+                const grid = document.querySelector(".products");
+                let html = "";
+                products.forEach((p, index) => {
+                    const isReady = p.stock > 0;
+                    html += `<div class="product">
+                        <img src="${p.img}">
+                        <h3>${p.name}</h3>
+                        <div style="background: ${isReady ? '#d4edda' : '#fff3cd'}; padding: 4px; border-radius: 10px; font-size: 11px;">
+                            ${isReady ? 'Ready to Ship' : 'Made to Order'}
                         </div>
-                    </div>
-                </div>
+                        <p>₹${p.price}</p>
+                        <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
+                        ${currentUser === 'admin' ? `<button onclick="deleteProduct(${index})" style="background:red; font-size:10px;">Delete</button>` : ''}
+                    </div>`;
+                });
+                grid.innerHTML = html;
+            }
+
+            function addToCart(name, price) {
+                if (!currentUser) { alert("Please login first!"); return; }
+                let item = cart.find(i => i.name === name);
+                if (item) { item.qty++; } else { cart.push({name, price, qty: 1}); }
+                localStorage.setItem("cart", JSON.stringify(cart));
+                updateCartBadge();
+                alert(name + " added!");
+            }
+
+            function updateCartBadge() {
+                let count = cart.reduce((acc, item) => acc + item.qty, 0);
+                document.getElementById("cart-count").innerText = count;
+            }
+
+            function searchProduct() {
+                let val = document.getElementById("search").value.toLowerCase();
+                document.querySelectorAll(".product").forEach(p => {
+                    p.style.display = p.querySelector("h3").innerText.toLowerCase().includes(val) ? "block" : "none";
+                });
+            }
+        </script>
+
+        <div id="admin-panel" style="display: none; padding: 20px; background: #eee;">
+            <h2>Admin Dashboard</h2>
+            <div id="admin-product-manager">
+                <input type="text" id="new-product-name" placeholder="Name">
+                <input type="number" id="new-product-price" placeholder="Price">
+                <button onclick="adminSaveProduct()">Add Product</button>
             </div>
+            <table id="user-table" style="width: 100%; margin-top: 20px; background: white;">
+                <thead><tr><th>User</th><th>Email</th></tr></thead>
+                <tbody id="user-table-body"></tbody>
+            </table>
+        </div>
 
-            <div id="ai-chat-bubble" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #4b4f7c; color: white; padding: 15px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 1000;">
-                🤖💬 Help
+        <div id="ai-chat-bubble" onclick="toggleChat()" style="position: fixed; bottom: 20px; right: 20px; background: #4b4f7c; color: white; padding: 15px; border-radius: 50%; cursor: pointer; z-index: 1000;">🤖 Help</div>
+        <div id="ai-chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: white; box-shadow: 0 5px 15px rgba(0,0,0,0.2); flex-direction: column; z-index: 1001; border-radius: 10px;">
+            <div style="background: #4b4f7c; color: white; padding: 10px;">Aura Assistant</div>
+            <div id="chat-messages" style="flex: 1; padding: 10px; overflow-y: auto;"></div>
+            <div style="padding: 10px; border-top: 1px solid #eee;">
+                <input type="text" id="chat-input" placeholder="Ask about materials..." style="width: 70%;">
+                <button onclick="askAI()">Send</button>
             </div>
+        </div>
 
-            <div id="ai-chat-window" style="display: none; position: fixed; bottom: 80px; right: 20px; width: 320px; height: 450px; background: white; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 1001; flex-direction: column; overflow: hidden; border: 1px solid #ddd;">
-    
-                <div style="background: #4b4f7c; color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; border-radius: 15px 15px 0 0;">
-    
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span id="assistant-name">Aura</span>
-                        <span style="font-size: 18px;">🌸</span>
-                    </div>
-    
-                    <button id="close-chat-btn" onclick="toggleChat()">&times;</button>
-                </div>
+        <section id="about-artist" style="background: #fffafa; padding: 40px 20px; text-align: center;">
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 32px;">Meet the Maker</h2>
+            <p>I'm the artist behind Floral Sphere. Every rose is hand-cut with love.</p>
+            <a href="https://youtube.com/@snehameenu">YouTube</a> | <a href="https://instagram.com/meenuzzzz_vlogzzzz">Instagram</a>
+        </section>
 
-                <div id="chat-messages" style="flex: 1; padding: 15px; overflow-y: auto; background: #fff; display: flex; flex-direction: column; line-height: 1.4; gap: 12px; min-height: 200px;">
-                    <div style="background: #f1f1f1; padding: 10px; border-radius: 10px; max-width: 80%; font-size: 14px; line-height: 1.4; word-wrap: break-word;">
-                        Hi! I'm your Aura. How can I help you today?
-                    </div>
-                </div>
-
-                <div id="quick-options" style="padding: 10px; background: #f9f9f9; display: flex; flex-wrap: wrap; gap: 8px; border-top: 1px solid #eee;">
-                    <button onclick="handleQuickOption('How to Login?')" style="background: white; border: 1px solid #4b4f7c; border-radius: 15px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #4b4f7c;">Login Help</button>
-                    <button onclick="handleQuickOption('Delivery Info')" style="background: white; border: 1px solid #4b4f7c; border-radius: 15px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #4b4f7c;">Delivery</button>
-                    <button onclick="handleQuickOption('Custom Color')" style="background: white; border: 1px solid #4b4f7c; border-radius: 15px; padding: 5px 12px; font-size: 12px; cursor: pointer; color: #4b4f7c;">Color</button>
-                </div>
-
-                <div style="padding: 10px; border-top: 1px solid #eee; display: flex; gap: 5px; background: white;">
-                    <input type="text" id="chat-input" placeholder="Type here..." style="flex: 1; border: 1px solid #ddd; padding: 8px; border-radius: 5px; outline: none;">
-                    <button onclick="askAI()" style="background: #4b4f7c; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Send</button>
-                </div>
-            </div>
-
-
-            <section id="about-artist" style="background: #fffafa; padding: 40px 20px; text-align: center; border-top: 1px solid #ffe1e1;">
-                <h2 style="font-family: 'Dancing Script', cursive; font-size: 32px; color: #4b4f7c;">Meet the Maker</h2>
-                <p style="max-width: 600px; margin: 10px auto; color: #555; line-height: 1.6;">
-                    Hi! I'm the artist behind <strong>Floral Sphere</strong>. Every paper rose and flower is hand-cut and shaped by me using premium crepe paper. I believe that flowers should last as long as the memories they celebrate.
-                </p>
-                <div style="margin-top: 20px;">
-                    <a href="https://youtube.com/@snehameenu?si=4-_5CBJfhxKC7wSg" target="_blank" style="margin: 0 10px; color: #ff0000; text-decoration: none;">YouTube</a>
-                    <a href="https://www.instagram.com/meenuzzzz_vlogzzzz?igsh=MWRlMHR2ajEweXY5Yw==" target="_blank" style="margin: 0 10px; color: #e1306c; text-decoration: none;">Instagram</a>
-                </div>
-            </section>
-
-        <footer>MeenuZzZz VlogZzZz</footer>
-
-        
+        <footer style="text-align: center; padding: 20px; color: #777; border-top: 1px solid #eee;">
+            MeenuZzZz VlogZzZz © 2026
+        </footer>
     </body>
-
-
-
-</html>
-
-        
-    </body>
-
-
-
 </html>
